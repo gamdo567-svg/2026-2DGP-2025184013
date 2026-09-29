@@ -12,8 +12,8 @@ def move_circle():
     print("Circle")
     for deg in range(0,360, 5):
         rad = math.radians(deg)
-        x = startX + 200 * math.cos(rad)
-        y = startY + 200 * math.sin(rad)
+        x = startX + 150 * math.cos(rad)
+        y = startY + 150 * math.sin(rad)
         draw_character(x,y)
       
 
@@ -59,7 +59,7 @@ def draw_triangle_line(x, y, deg):
     print("Triangle Line")
     rad = math.radians(deg)
 
-    for i in range(50):
+    for i in range(25):
         x += 10 * math.cos(rad)
         y += 10 * math.sin(rad)
 
