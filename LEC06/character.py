@@ -69,7 +69,7 @@ def draw_triangle_line(x, y, deg):
 
 def move_triangle():
     print("Triangle")
-    x,y = 0,0
+    x,y = startX,startY
     for deg in range(0, 360, 120):
         x, y = draw_triangle_line(x, y, deg)
 
