@@ -41,7 +41,8 @@ def draw_bottom():
     pass
 
 def draw_left():
-    print("Left")
+    for x in range(550,50,-5):
+        draw_character(x, 50)
     pass
 
 def move_rectangle():
