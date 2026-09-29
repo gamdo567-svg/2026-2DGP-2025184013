@@ -1,4 +1,4 @@
-# ?¤ìŠµ ê³¼ì œ ì§„í–‰
+
 from pico2d import *
 import math
 
@@ -52,9 +52,24 @@ def move_rectangle():
     draw_left()
 
 
+def draw_triangle_line(x, y, deg):
+    print("Triangle Line")
+    rad = math.radians(deg)
+
+    for i in range(100):
+        x += 5 * math.cos(rad)
+        y += 5 * math.sin(rad)
+
+        draw_character(x, y)
+    return x,y
+
 
 def move_triangle():
     print("Triangle")
+    x,y = 0,0
+    for deg in range(0, 360, 120):
+        x, y = draw_triangle_line(x, y, deg)
+
     pass
 
 
@@ -65,6 +80,4 @@ while True:
     pass
 
 close_canvas()
-
-# »ï°¢Çü ÀÌµ¿ º¸Á¤¿ë ÁÖ¼®
 
