@@ -1,4 +1,4 @@
-# ì‹¤ìŠµ ê³¼ì œ ì§„í–‰
+# ?¤ìŠµ ê³¼ì œ ì§„í–‰
 from pico2d import *
 import math
 
@@ -65,3 +65,6 @@ while True:
     pass
 
 close_canvas()
+
+# »ï°¢Çü ÀÌµ¿ º¸Á¤¿ë ÁÖ¼®
+
