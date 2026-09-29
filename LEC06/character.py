@@ -20,15 +20,19 @@ def move_circle():
     pass
 
 def draw_top():
+    print("Top")
     pass
 
 def draw_right():
+    print("Right")
     pass
 
 def draw_bottom():
+    print("Bottom")
     pass
 
 def draw_left():
+    print("Left")
     pass
 
 def move_rectangle():
@@ -46,7 +50,7 @@ def move_triangle():
 
 
 while True:
-    move_circle()
+    #move_circle()
     move_rectangle()
     move_triangle()
     pass
