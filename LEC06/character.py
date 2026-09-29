@@ -9,11 +9,10 @@ startX = 300
 startY = 200
 targetX = 300
 targetY = 300
-trinagle_speed = 10
+speed = 10
 
 def move_circle():
-    angle = 5
-    for deg in range(0,360, angle):
+    for deg in range(0,360, speed // 2):
         rad = math.radians(deg)
         x = startX + (targetX / 2) * math.cos(rad)
         y = startY + (targetY / 2) * math.sin(rad)
@@ -28,22 +27,22 @@ def draw_character(x,y):
 
 
 def draw_top():
-    for y in range(startY,startY + targetY, trinagle_speed):
+    for y in range(startY,startY + targetY, speed):
         draw_character(startX, y)
 
 
 def draw_right():
-    for x in range(startX,startX + targetX, triangle_speed):
+    for x in range(startX,startX + targetX, speed):
         draw_character(x,startY + targetY)
 
 
 def draw_bottom():
-    for y in range(startY + targetY, startY, -trinagle_speed):
+    for y in range(startY + targetY, startY, -speed):
         draw_character(startX + targetX, y)
 
 
 def draw_left():
-    for x in range(startX + targetX, startX, -trinagle_speed):
+    for x in range(startX + targetX, startX, -speed):
         draw_character(x, startY)
  
 
@@ -58,8 +57,8 @@ def draw_triangle_line(x, y, deg):
     rad = math.radians(deg)
 
     for i in range(30):
-        x += 10 * math.cos(rad)
-        y += 10 * math.sin(rad)
+        x += speed * math.cos(rad)
+        y += speed * math.sin(rad)
 
         draw_character(x, y)
     return x,y
