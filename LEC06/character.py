@@ -5,13 +5,15 @@ import math
 open_canvas(900, 600)
 
 character = load_image('character.png')
+startX = 300
+startY = 200
 
 def move_circle():
     print("Circle")
     for deg in range(0,360, 5):
         rad = math.radians(deg)
-        x = 400 + 200 * math.cos(rad)
-        y = 300 + 200 * math.sin(rad)
+        x = startX + 200 * math.cos(rad)
+        y = startY + 200 * math.sin(rad)
         draw_character(x,y)
       
 
