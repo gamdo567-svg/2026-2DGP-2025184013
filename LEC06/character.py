@@ -23,27 +23,28 @@ def draw_character(x,y):
     update_canvas()
     delay(0.05)
 
+
 def draw_top():
     print("Top")
-    for y in range(50,550,10):
-        draw_character(50, y)
+    for y in range(startY,startY + 200,10):
+        draw_character(startX, y)
 
 
 def draw_right():
     print("Right")
-    for x in range(50,550,10):
-        draw_character(x,550)
+    for x in range(startX,startX + 200,10):
+        draw_character(x,startY + 200)
 
 
 def draw_bottom():
     print("Bottom")
-    for y in range(550,50,-10):
-        draw_character(550, y)
+    for y in range(startY + 200, startY, -10):
+        draw_character(startX + 200, y)
 
 
 def draw_left():
-    for x in range(550,50,-10):
-        draw_character(x, 50)
+    for x in range(startX + 200, startX, -10):
+        draw_character(x, startY)
  
 
 def move_rectangle():
