@@ -14,7 +14,6 @@ def move_circle():
         y = 300 + 200 * math.sin(rad)
         draw_character(x,y)
       
-    pass
 
 def draw_character(x,y):
     clear_canvas()
@@ -38,12 +37,12 @@ def draw_bottom():
     print("Bottom")
     for y in range(550,50,-5):
         draw_character(550, y)
-    pass
+
 
 def draw_left():
     for x in range(550,50,-5):
         draw_character(x, 50)
-    pass
+ 
 
 def move_rectangle():
     print("Rectangle")
@@ -51,7 +50,7 @@ def move_rectangle():
     draw_right()
     draw_bottom()
     draw_left()
-    pass
+
 
 
 def move_triangle():
@@ -61,7 +60,7 @@ def move_triangle():
 
 while True:
     #move_circle()
-    move_rectangle()
+    #move_rectangle()
     move_triangle()
     pass
 
