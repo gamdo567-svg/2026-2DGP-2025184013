@@ -11,7 +11,8 @@ targetX = 300
 targetY = 300
 
 def move_circle():
-    for deg in range(0,360, 5):
+    angle = 5
+    for deg in range(0,360, angle):
         rad = math.radians(deg)
         x = startX + (targetX / 2) * math.cos(rad)
         y = startY + (targetY / 2) * math.sin(rad)
