@@ -1,15 +1,22 @@
 # 실습 과제 진행
 from pico2d import *
+import math
 
 open_canvas(900, 600)
 
 character = load_image('character.png')
 
 def move_circle():
-    clear_canvas()
-    character.draw(400, 300)
-    update_canvas()
     print("Circle")
+    for deg in range(0,360, 5):
+        rad = math.radians(deg)
+        x = 400 + 200 * math.cos(rad)
+        y = 300 + 200 * math.sin(rad)
+        clear_canvas()
+        character.draw(x,y )
+        update_canvas()
+        delay(0.05)
+      
     pass
 
 
