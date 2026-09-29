@@ -23,24 +23,24 @@ def draw_character(x,y):
 
 def draw_top():
     print("Top")
-    for y in range(50,550,5):
+    for y in range(50,550,10):
         draw_character(50, y)
 
 
 def draw_right():
     print("Right")
-    for x in range(50,550,5):
+    for x in range(50,550,10):
         draw_character(x,550)
 
 
 def draw_bottom():
     print("Bottom")
-    for y in range(550,50,-5):
+    for y in range(550,50,-10):
         draw_character(550, y)
 
 
 def draw_left():
-    for x in range(550,50,-5):
+    for x in range(550,50,-10):
         draw_character(x, 50)
  
 
@@ -56,9 +56,9 @@ def draw_triangle_line(x, y, deg):
     print("Triangle Line")
     rad = math.radians(deg)
 
-    for i in range(100):
-        x += 5 * math.cos(rad)
-        y += 5 * math.sin(rad)
+    for i in range(50):
+        x += 10 * math.cos(rad)
+        y += 10 * math.sin(rad)
 
         draw_character(x, y)
     return x,y
