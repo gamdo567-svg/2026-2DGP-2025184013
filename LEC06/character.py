@@ -11,7 +11,6 @@ targetX = 300
 targetY = 300
 
 def move_circle():
-    print("Circle")
     for deg in range(0,360, 5):
         rad = math.radians(deg)
         x = startX + (targetX / 2) * math.cos(rad)
@@ -27,19 +26,16 @@ def draw_character(x,y):
 
 
 def draw_top():
-    print("Top")
     for y in range(startY,startY + targetY,10):
         draw_character(startX, y)
 
 
 def draw_right():
-    print("Right")
     for x in range(startX,startX + targetX,10):
         draw_character(x,startY + targetY)
 
 
 def draw_bottom():
-    print("Bottom")
     for y in range(startY + targetY, startY, -10):
         draw_character(startX + targetX, y)
 
@@ -50,7 +46,6 @@ def draw_left():
  
 
 def move_rectangle():
-    print("Rectangle")
     draw_top()
     draw_right()
     draw_bottom()
@@ -58,7 +53,6 @@ def move_rectangle():
 
 
 def draw_triangle_line(x, y, deg):
-    print("Triangle Line")
     rad = math.radians(deg)
 
     for i in range(30):
@@ -70,7 +64,6 @@ def draw_triangle_line(x, y, deg):
 
 
 def move_triangle():
-    print("Triangle")
     x,y = startX,startY
     for deg in range(0, 360, 120):
         x, y = draw_triangle_line(x, y, deg)
