@@ -12,24 +12,32 @@ def move_circle():
         rad = math.radians(deg)
         x = 400 + 200 * math.cos(rad)
         y = 300 + 200 * math.sin(rad)
-        clear_canvas()
-        character.draw(x,y )
-        update_canvas()
-        delay(0.05)
+        draw_character(x,y)
       
     pass
 
+def draw_character(x,y):
+    clear_canvas()
+    character.draw(x,y)
+    update_canvas()
+    delay(0.05)
+
 def draw_top():
     print("Top")
+    for x in range(50,750,5):
+        draw_character(x, 550)
     pass
+
 
 def draw_right():
     print("Right")
-    pass
+    for y in range(550,50,-5):
+        draw_character(x,750)
 
 def draw_bottom():
     print("Bottom")
-    pass
+    for x in range(750,50,-5):
+        draw_character(x, 550)
 
 def draw_left():
     print("Left")
