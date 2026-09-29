@@ -24,20 +24,17 @@ def draw_character(x,y):
 
 def draw_top():
     print("Top")
-    for x in range(50,750,5):
-        draw_character(x, 550)
-    pass
+    for y in range(50,550,5):
+        draw_character(50, y)
 
 
 def draw_right():
     print("Right")
-    for y in range(550,50,-5):
-        draw_character(x,750)
+    pass
 
 def draw_bottom():
     print("Bottom")
-    for x in range(750,50,-5):
-        draw_character(x, 550)
+    pass
 
 def draw_left():
     print("Left")
