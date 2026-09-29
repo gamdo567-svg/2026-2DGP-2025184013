@@ -65,8 +65,9 @@ def draw_triangle_line(x, y, deg):
 
 def move_triangle():
     x,y = startX,startY
-    for deg in range(0, 360, 120):
-        x, y = draw_triangle_line(x, y, deg)
+    angle = 120
+    for i in range(1,4):
+        x, y = draw_triangle_line(x, y, i * angle)
 
 
 while True:
