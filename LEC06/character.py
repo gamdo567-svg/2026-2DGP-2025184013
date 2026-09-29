@@ -75,8 +75,6 @@ def move_triangle():
     for deg in range(0, 360, 120):
         x, y = draw_triangle_line(x, y, deg)
 
-    pass
-
 
 while True:
     move_circle()
@@ -85,7 +83,6 @@ while True:
     delay(1)
     move_triangle()
     delay(1)
-    pass
 
 close_canvas()
 
