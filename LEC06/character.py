@@ -78,8 +78,11 @@ def move_triangle():
 
 while True:
     move_circle()
+    delay(1)
     move_rectangle()
+    delay(1)
     move_triangle()
+    delay(1)
     pass
 
 close_canvas()
