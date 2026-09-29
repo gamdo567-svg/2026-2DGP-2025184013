@@ -28,24 +28,24 @@ def draw_character(x,y):
 
 def draw_top():
     print("Top")
-    for y in range(startY,startY + 200,10):
+    for y in range(startY,startY + targetY,10):
         draw_character(startX, y)
 
 
 def draw_right():
     print("Right")
-    for x in range(startX,startX + 200,10):
-        draw_character(x,startY + 200)
+    for x in range(startX,startX + targetX,10):
+        draw_character(x,startY + targetY)
 
 
 def draw_bottom():
     print("Bottom")
-    for y in range(startY + 200, startY, -10):
-        draw_character(startX + 200, y)
+    for y in range(startY + targetY, startY, -10):
+        draw_character(startX + targetX, y)
 
 
 def draw_left():
-    for x in range(startX + 200, startX, -10):
+    for x in range(startX + targetX, startX, -10):
         draw_character(x, startY)
  
 
