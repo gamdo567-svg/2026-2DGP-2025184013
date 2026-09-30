@@ -7,7 +7,6 @@ open_canvas()
 character = load_image('characterSheet.png')
 character.draw(400, 300)
 
-test = 4
 animations = [
     [
         (106, 789, 30, 37),
@@ -96,5 +95,4 @@ while True:
             delay(frame_delays[i][animation.index(frame)])
         delay(1)
 
-delay(5)
 close_canvas()
