@@ -1,3 +1,5 @@
+from ast import While
+
 from pico2d import *
 
 open_canvas()
@@ -62,29 +64,30 @@ centers = [
     [14.5, 15, 15, 23, 22.5, 21.5, 14.5, 15, 15, 15, 15],
 ]
 
-i = -1
-for animation in animations:
-    i+= 1
 
-    draw_x = 400
-    draw_y = 300
+while True:
+    i = -1
+    for animation in animations:
+        i+= 1
 
-    for frame in animation:
-        x, y, width, height = frame
-        clear_canvas()
+        draw_x = 400
+        draw_y = 300
 
-        if centers[i] is not None:
-            draw_x = 400 + (width / 2 - centers[i][animation.index(frame)]) * 5
-            draw_y = 215 + height * 5 / 2
+        for frame in animation:
+            x, y, width, height = frame
+            clear_canvas()
+
+            if centers[i] is not None:
+                draw_x = 400 + (width / 2 - centers[i][animation.index(frame)]) * 5
+                draw_y = 215 + height * 5 / 2
 
 
-        character.clip_draw(
-            x, y, width, height,
-            draw_x, draw_y,
-            width * 5, height * 5
-        )
-        update_canvas()
-        delay(0.5)
-
+            character.clip_draw(
+                x, y, width, height,
+                draw_x, draw_y,
+                width * 5, height * 5
+            )
+            update_canvas()
+            delay(0.5)
 delay(5)
 close_canvas()
