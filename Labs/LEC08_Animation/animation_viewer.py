@@ -5,6 +5,7 @@ open_canvas()
 character = load_image('characterSheet.png')
 character.draw(400, 300)
 
+test = 2
 animations = [
     [
         (106, 789, 30, 37),
@@ -25,11 +26,15 @@ animations = [
         (206, 606, 24, 29),
         (235, 606, 25, 42),
         (267, 609, 26, 38),
-        (302, 609, 30, 42),
-        (339, 609, 30, 41),
+        (302, 607, 30, 42),
+        (339, 607, 30, 42),
     ],
 ]
+i = 0
 for animation in animations:
+    i+= 1
+    if i != test:
+        continue
     for frame in animation:
         x, y, width, height = frame
         clear_canvas()
