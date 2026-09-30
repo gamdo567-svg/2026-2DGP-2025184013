@@ -1,5 +1,4 @@
 from ast import While
-
 from pico2d import *
 
 open_canvas()
@@ -55,7 +54,6 @@ animations = [
         (496, 534, 33, 33),
     ],
 ]
-
 centers = [
     None,
     [13.5, 13.5, 11.5, 12.5, 10.5, 15, 15],
@@ -73,7 +71,6 @@ while True:
     i = -1
     for animation in animations:
         i+= 1
-
         draw_x = 400
         draw_y = 300
 
@@ -85,12 +82,12 @@ while True:
                 draw_x = 400 + (width / 2 - centers[i][animation.index(frame)]) * 5
                 draw_y = 215 + height * 5 / 2
 
-
             character.clip_draw(
                 x, y, width, height,
                 draw_x, draw_y,
                 width * 5, height * 5
             )
+            
             update_canvas()
             delay(frame_delays[i][animation.index(frame)])
         delay(1)
