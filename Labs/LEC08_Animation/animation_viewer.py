@@ -57,6 +57,7 @@ animations = [
 
 saber_center = [14.5, 15, 15, 23, 22.5, 21.5, 14.5, 15, 15, 15, 15]
 attack_center = [15, 15, 16.5, 13.5, 13.5, 13.5, 13.5, 14.5, 14.5]
+jump_center = [13.5, 13.5, 11.5, 12.5, 10.5, 15, 15]
 
 i = 0
 for animation in animations:
@@ -74,6 +75,9 @@ for animation in animations:
             draw_y = 215 + height * 5 / 2
         elif animation == animations[2]:
             draw_x = 400 + (width / 2 - attack_center[animations[2].index(frame)]) * 5
+            draw_y = 215 + height * 5 / 2
+        elif animation == animations[1]:
+            draw_x = 400 + (width / 2 - jump_center[animations[1].index(frame)]) * 5
             draw_y = 215 + height * 5 / 2
 
         character.clip_draw(
