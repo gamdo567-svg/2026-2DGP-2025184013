@@ -50,8 +50,8 @@ animations = [
         (274, 534, 63, 53),
         (341, 534, 47, 33),
         (398, 534, 45, 32),
-        (451, 534, 32, 32),
-        (496, 534, 32, 33),
+        (451, 534, 33, 32),
+        (496, 534, 33, 33),
     ],
 ]
 
@@ -72,7 +72,7 @@ for animation in animations:
         if animation == animations[3]:
             draw_x = 400 + (width / 2 - saber_center[animations[3].index(frame)]) * 5
             draw_y = 215 + height * 5 / 2
-            
+
         character.clip_draw(
             x, y, width, height,
             draw_x, draw_y,
