@@ -88,6 +88,8 @@ while True:
                 width * 5, height * 5
             )
             update_canvas()
-            delay(0.5)
+            delay(0.1)
+        delay(1)
+        
 delay(5)
 close_canvas()
