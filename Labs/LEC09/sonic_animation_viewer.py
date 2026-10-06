@@ -45,10 +45,10 @@ class Animation:
 
 ANIMATIONS = (Animation('idle', '대기', (
     Frame(1, 39, 29, 39), Frame(31, 40, 26, 38),
-    Frame(58, 39, 29, 39), Frame(87, 40, 29, 38),
+    Frame(58, 39, 28, 39), Frame(86, 40, 30, 38),
     Frame(118, 40, 30, 38), Frame(150, 40, 30, 38),
-    Frame(182, 40, 32, 38), Frame(214, 40, 30, 37),
-)), Animation('look_up', '위 보기', (Frame(244, 38, 25, 39),)))
+    Frame(182, 40, 29, 38), Frame(211, 39, 29, 38),
+)), Animation('look_up', '위 보기', (Frame(240, 39, 29, 38),)))
 
 ANIMATIONS += (
     Animation('crouch', '웅크리기', (Frame(270, 45, 24, 32),)),
@@ -180,17 +180,28 @@ def handle_events():
     )
 
 
+def load_sprite():
+    if not IMAGE_PATH.is_file():
+        raise FileNotFoundError('이미지 파일이 없습니다.')
+    sheet = pico2d.load_image(str(IMAGE_PATH))
+    for animation in ANIMATIONS:
+        for frame in animation.frames:
+            if not (0 <= frame.x < frame.x + frame.width <= sheet.w
+                    and 0 <= frame.top < frame.top + frame.height <= sheet.h):
+                raise ValueError(f'이미지 영역을 벗어난 프레임: {animation.key}')
+    return sheet
+
+
 def main():
     pico2d.open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
     try:
         # 기본 밝은 회색 배경을 유지하고 학습용 격자는 숨긴다.
         pico2d.hide_lattice()
         try:
-            if not IMAGE_PATH.is_file():
-                raise FileNotFoundError('이미지 파일이 없습니다.')
-            sheet = pico2d.load_image(str(IMAGE_PATH))
+            sheet = load_sprite()
         except Exception as error:
-            print(f'이미지 로드 실패: {IMAGE_PATH}\n{error}', file=sys.stderr)
+            detail = str(error) or 'pico2d에서 이미지를 읽을 수 없습니다.'
+            print(f'이미지 로드 실패: {IMAGE_PATH}\n{detail}', file=sys.stderr)
             return 1
         playback = Playback()
         scale = calculate_scale()
