@@ -6,6 +6,7 @@
 
 from pathlib import Path
 from dataclasses import dataclass, replace
+from math import pi, sin
 import sys
 from time import perf_counter
 
@@ -13,7 +14,7 @@ import pico2d
 
 CANVAS_WIDTH, CANVAS_HEIGHT = 800, 600
 IMAGE_PATH = Path(__file__).resolve().with_name('sonic-sprite.png')
-FRAME_SECONDS = 0.1
+DEFAULT_FRAME_SECONDS = 0.1
 REPEAT_COUNT = 5
 WAIT_SECONDS = 1.0
 
@@ -45,6 +46,10 @@ class Animation:
     key: str
     name: str
     frames: tuple[Frame, ...]
+    frame_seconds: float = DEFAULT_FRAME_SECONDS
+    travel_x: float = 0.0
+    jump_height: float = 0.0
+    bounce_height: float = 0.0
 
 
 ANIMATIONS = (
@@ -114,6 +119,24 @@ ANIMATIONS = tuple(replace(animation, frames=tuple(
     )) for frame in animation.frames
 )) for animation in ANIMATIONS)
 
+# 이동 거리는 5회 재생 전체에 걸쳐 적용한다. 공중 동작은 매 회차마다 도약한다.
+MOTION_SETTINGS = {
+    'crouch': {'frame_seconds': 0.06},
+    'curl': {'frame_seconds': 0.06},
+    'walk': {'frame_seconds': 0.08, 'travel_x': 180, 'bounce_height': 5},
+    'run': {'frame_seconds': 0.06, 'travel_x': 320, 'bounce_height': 12},
+    'spin': {'frame_seconds': 0.055, 'travel_x': 300, 'jump_height': 100},
+    'spin_ball': {'frame_seconds': 0.06, 'travel_x': 280, 'bounce_height': 10},
+    'fast_run': {'frame_seconds': 0.05, 'travel_x': 340, 'bounce_height': 11},
+    'dash': {'frame_seconds': 0.05, 'travel_x': 340, 'bounce_height': 10},
+    'turn': {'frame_seconds': 0.07},
+    'fall': {'frame_seconds': 0.07},
+    'balance': {'frame_seconds': 0.07},
+    'surprise': {'frame_seconds': 0.06},
+}
+ANIMATIONS = tuple(replace(animation, **MOTION_SETTINGS.get(animation.key, {}))
+                   for animation in ANIMATIONS)
+
 
 class Playback:
     def __init__(self):
@@ -132,10 +155,23 @@ class Playback:
     def frame(self):
         return self.animation.frames[self.frame_index]
 
+    @property
+    def position_offset(self):
+        animation = self.animation
+        phase = (self.frame_index + self.frame_elapsed / animation.frame_seconds) / len(animation.frames)
+        overall = (self.completed_cycles + phase) / REPEAT_COUNT
+        if self.waiting:
+            overall = 1.0
+            phase = 1.0
+        x = animation.travel_x * (overall - 0.5)
+        y = animation.jump_height * sin(pi * phase)
+        y += animation.bounce_height * abs(sin(2 * pi * phase * 2))
+        return x, y
+
     def update(self, dt):
         """넘친 시간을 다음 상태에 넘겨 지연 시에도 재생 순서를 유지한다."""
         while dt > 0:
-            duration = WAIT_SECONDS if self.waiting else FRAME_SECONDS
+            duration = WAIT_SECONDS if self.waiting else self.animation.frame_seconds
             elapsed = self.wait_elapsed if self.waiting else self.frame_elapsed
             remaining = duration - elapsed
             if dt + 1e-9 < remaining:
@@ -168,10 +204,10 @@ def calculate_scale():
     )))
 
 
-def draw_frame(sheet, frame, scale):
+def draw_frame(sheet, frame, scale, movement=(0.0, 0.0)):
     sheet.clip_draw(
-        *frame.clip(sheet.h), CANVAS_WIDTH / 2 + frame.offset_x * scale,
-        CANVAS_HEIGHT / 2 + (frame.height / 2 + frame.offset_y - REFERENCE_HEIGHT / 2) * scale,
+        *frame.clip(sheet.h), CANVAS_WIDTH / 2 + frame.offset_x * scale + movement[0],
+        CANVAS_HEIGHT / 2 + (frame.height / 2 + frame.offset_y - REFERENCE_HEIGHT / 2) * scale + movement[1],
         frame.width * scale, frame.height * scale,
     )
 
@@ -215,7 +251,7 @@ def main():
             playback.update(now - previous)
             previous = now
             pico2d.clear_canvas()
-            draw_frame(sheet, playback.frame, scale)
+            draw_frame(sheet, playback.frame, scale, playback.position_offset)
             pico2d.update_canvas()
             pico2d.delay(0.01)
     finally:
