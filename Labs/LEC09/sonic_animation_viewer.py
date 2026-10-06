@@ -1,8 +1,11 @@
 """소닉 스프라이트 애니메이션 뷰어."""
 
+from pathlib import Path
+
 import pico2d
 
 CANVAS_WIDTH, CANVAS_HEIGHT = 800, 600
+IMAGE_PATH = Path(__file__).resolve().with_name('sonic-sprite.png')
 
 
 def handle_events():
