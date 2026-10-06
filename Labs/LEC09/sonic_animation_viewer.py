@@ -122,7 +122,7 @@ class Playback:
             self.waiting = False
             self.completed_cycles = 0
             self.frame_index = 0
-            self.animation_index = min(self.animation_index + 1, len(ANIMATIONS) - 1)
+            self.animation_index = (self.animation_index + 1) % len(ANIMATIONS)
         self.frame_elapsed += dt
         while self.frame_elapsed >= FRAME_SECONDS:
             self.frame_elapsed -= FRAME_SECONDS
