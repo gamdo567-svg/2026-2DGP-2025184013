@@ -29,6 +29,7 @@ def main():
             return 1
         while handle_events():
             pico2d.clear_canvas()
+            sheet.draw(CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
             pico2d.update_canvas()
             pico2d.delay(0.01)
     finally:
