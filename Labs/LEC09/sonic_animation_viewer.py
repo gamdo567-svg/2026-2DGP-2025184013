@@ -11,6 +11,7 @@ CANVAS_WIDTH, CANVAS_HEIGHT = 800, 600
 IMAGE_PATH = Path(__file__).resolve().with_name('sonic-sprite.png')
 FRAME_SECONDS = 0.1
 REPEAT_COUNT = 5
+WAIT_SECONDS = 1.0
 
 # 이미지 상단 기준 영역 조사. 동작명은 원본에 이름이 없어 시각적으로 명명한다.
 # y=38..77: 대기 8장, 위 보기, 웅크리기, 앉아 회전 각 1장
@@ -57,6 +58,7 @@ class Playback:
         self.frame_elapsed = 0.0
         self.completed_cycles = 0
         self.waiting = False
+        self.wait_elapsed = 0.0
 
     @property
     def animation(self):
@@ -68,7 +70,14 @@ class Playback:
 
     def update(self, dt):
         if self.waiting:
-            return
+            self.wait_elapsed += dt
+            if self.wait_elapsed < WAIT_SECONDS:
+                return
+            dt = self.wait_elapsed - WAIT_SECONDS
+            self.wait_elapsed = 0.0
+            self.waiting = False
+            self.completed_cycles = 0
+            self.frame_index = 0
         self.frame_elapsed += dt
         while self.frame_elapsed >= FRAME_SECONDS:
             self.frame_elapsed -= FRAME_SECONDS
@@ -78,6 +87,8 @@ class Playback:
                 if self.completed_cycles == REPEAT_COUNT:
                     self.frame_index = len(self.animation.frames) - 1
                     self.waiting = True
+                    self.wait_elapsed = self.frame_elapsed
+                    self.frame_elapsed = 0.0
                     break
 
 
