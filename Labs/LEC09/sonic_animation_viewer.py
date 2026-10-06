@@ -39,6 +39,13 @@ class Animation:
     frames: tuple[Frame, ...]
 
 
+ANIMATIONS = (Animation('idle', '대기', (Frame(1, 38, 28, 39),)),)
+
+
+def draw_frame(sheet, frame):
+    sheet.clip_draw(*frame.clip(sheet.h), CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
+
+
 def handle_events():
     return not any(
         event.type == pico2d.SDL_QUIT
@@ -59,7 +66,7 @@ def main():
             return 1
         while handle_events():
             pico2d.clear_canvas()
-            sheet.draw(CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
+            draw_frame(sheet, ANIMATIONS[0].frames[0])
             pico2d.update_canvas()
             pico2d.delay(0.01)
     finally:
