@@ -137,8 +137,19 @@ class Playback:
                     break
 
 
-def draw_frame(sheet, frame):
-    sheet.clip_draw(*frame.clip(sheet.h), CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
+def calculate_scale():
+    frames = [frame for animation in ANIMATIONS for frame in animation.frames]
+    return max(1, int(min(
+        CANVAS_WIDTH * 0.7 / max(frame.width for frame in frames),
+        CANVAS_HEIGHT * 0.7 / max(frame.height for frame in frames),
+    )))
+
+
+def draw_frame(sheet, frame, scale):
+    sheet.clip_draw(
+        *frame.clip(sheet.h), CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2,
+        frame.width * scale, frame.height * scale,
+    )
 
 
 def handle_events():
@@ -160,13 +171,14 @@ def main():
             print(f'이미지 로드 실패: {IMAGE_PATH}\n{error}', file=sys.stderr)
             return 1
         playback = Playback()
+        scale = calculate_scale()
         previous = perf_counter()
         while handle_events():
             now = perf_counter()
             playback.update(now - previous)
             previous = now
             pico2d.clear_canvas()
-            draw_frame(sheet, playback.frame)
+            draw_frame(sheet, playback.frame, scale)
             pico2d.update_canvas()
             pico2d.delay(0.01)
     finally:
