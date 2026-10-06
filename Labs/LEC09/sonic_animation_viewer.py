@@ -1,7 +1,7 @@
 """소닉 스프라이트 애니메이션 뷰어."""
 
 from pathlib import Path
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import sys
 from time import perf_counter
 
@@ -44,10 +44,10 @@ class Animation:
 
 
 ANIMATIONS = (Animation('idle', '대기', (
-    Frame(1, 38, 28, 39), Frame(31, 38, 26, 39),
-    Frame(58, 38, 28, 39), Frame(87, 38, 29, 39),
-    Frame(118, 38, 30, 39), Frame(150, 38, 30, 39),
-    Frame(182, 38, 30, 39), Frame(214, 38, 29, 39),
+    Frame(1, 39, 29, 39), Frame(31, 40, 26, 38),
+    Frame(58, 39, 29, 39), Frame(87, 40, 29, 38),
+    Frame(118, 40, 30, 38), Frame(150, 40, 30, 38),
+    Frame(182, 40, 32, 38), Frame(214, 40, 30, 37),
 )), Animation('look_up', '위 보기', (Frame(244, 38, 25, 39),)))
 
 ANIMATIONS += (
@@ -61,10 +61,10 @@ ANIMATIONS += (
     ))),
     Animation('run', '달리기', tuple(Frame(*rect) for rect in (
         (1, 124, 33, 40), (39, 124, 35, 39), (89, 125, 35, 38),
-        (130, 123, 34, 40), (181, 123, 34, 40), (228, 123, 33, 39),
+        (130, 121, 34, 42), (181, 122, 34, 41), (228, 122, 33, 40),
     ))),
     Animation('spin', '공중 회전', tuple(Frame(*rect) for rect in (
-        (1, 169, 29, 30), (35, 168, 29, 30), (67, 169, 30, 29),
+        (1, 169, 29, 30), (35, 167, 29, 31), (67, 169, 30, 29),
         (98, 169, 31, 29), (131, 168, 29, 30), (162, 168, 29, 31),
         (193, 170, 30, 29), (230, 170, 31, 29), (268, 170, 30, 30),
     ))),
@@ -81,18 +81,34 @@ ANIMATIONS += (
         (123, 285, 39, 32), (172, 286, 39, 31), (218, 285, 38, 32),
     ))),
     Animation('turn', '방향 전환', tuple(Frame(*rect) for rect in (
-        (1, 327, 24, 44), (31, 327, 29, 44), (65, 327, 20, 44),
+        (1, 326, 24, 45), (31, 327, 29, 44), (65, 327, 20, 44),
         (90, 327, 25, 43), (119, 327, 25, 43), (149, 327, 20, 44),
     ))),
     Animation('fall', '넘어지기', (Frame(184, 341, 40, 28), Frame(232, 341, 39, 27))),
     Animation('balance', '균형 잡기', tuple(Frame(*rect) for rect in (
         (1, 379, 27, 38), (31, 379, 31, 36), (64, 379, 31, 36),
-        (99, 379, 33, 36), (136, 379, 32, 36), (176, 379, 33, 36),
-        (217, 379, 33, 36), (254, 379, 33, 35),
+        (99, 377, 33, 38), (136, 379, 32, 36), (176, 379, 33, 36),
+        (217, 379, 33, 36), (254, 378, 33, 36),
     ))),
     Animation('surprise', '놀라기', (Frame(6, 429, 34, 40), Frame(49, 426, 34, 43))),
     Animation('look_side', '옆 보기', (Frame(96, 427, 23, 39), Frame(125, 427, 23, 39))),
 )
+
+# 행의 바닥선을 기준으로 원본의 상하 움직임을 보존한다.
+# 공중 회전과 회전 공은 중심을 기준으로 정렬한다.
+GROUND_LINES = {
+    'idle': 78, 'look_up': 78, 'crouch': 78, 'curl': 78,
+    'walk': 118, 'run': 164, 'fast_run': 274, 'dash': 318,
+    'turn': 371, 'fall': 371, 'balance': 417,
+    'surprise': 469, 'look_side': 466,
+}
+REFERENCE_HEIGHT = max(f.height for a in ANIMATIONS for f in a.frames)
+ANIMATIONS = tuple(replace(animation, frames=tuple(
+    replace(frame, offset_y=(
+        GROUND_LINES[animation.key] - frame.top - frame.height
+        if animation.key in GROUND_LINES else (REFERENCE_HEIGHT - frame.height) / 2
+    )) for frame in animation.frames
+)) for animation in ANIMATIONS)
 
 
 class Playback:
@@ -147,7 +163,8 @@ def calculate_scale():
 
 def draw_frame(sheet, frame, scale):
     sheet.clip_draw(
-        *frame.clip(sheet.h), CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2,
+        *frame.clip(sheet.h), CANVAS_WIDTH / 2 + frame.offset_x * scale,
+        CANVAS_HEIGHT / 2 + (frame.height / 2 + frame.offset_y - REFERENCE_HEIGHT / 2) * scale,
         frame.width * scale, frame.height * scale,
     )
 
