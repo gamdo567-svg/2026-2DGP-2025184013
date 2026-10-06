@@ -180,6 +180,8 @@ def handle_events():
 def main():
     pico2d.open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
     try:
+        # 기본 밝은 회색 배경을 유지하고 학습용 격자는 숨긴다.
+        pico2d.hide_lattice()
         try:
             if not IMAGE_PATH.is_file():
                 raise FileNotFoundError('이미지 파일이 없습니다.')
