@@ -67,7 +67,7 @@ class Playback:
         self.frame_elapsed += dt
         while self.frame_elapsed >= FRAME_SECONDS:
             self.frame_elapsed -= FRAME_SECONDS
-            self.frame_index = min(self.frame_index + 1, len(self.animation.frames) - 1)
+            self.frame_index = (self.frame_index + 1) % len(self.animation.frames)
 
 
 def draw_frame(sheet, frame):
