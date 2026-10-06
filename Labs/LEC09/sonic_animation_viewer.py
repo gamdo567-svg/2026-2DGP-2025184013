@@ -3,11 +3,13 @@
 from pathlib import Path
 from dataclasses import dataclass
 import sys
+from time import perf_counter
 
 import pico2d
 
 CANVAS_WIDTH, CANVAS_HEIGHT = 800, 600
 IMAGE_PATH = Path(__file__).resolve().with_name('sonic-sprite.png')
+FRAME_SECONDS = 0.1
 
 # 이미지 상단 기준 영역 조사. 동작명은 원본에 이름이 없어 시각적으로 명명한다.
 # y=38..77: 대기 8장, 위 보기, 웅크리기, 앉아 회전 각 1장
@@ -47,6 +49,27 @@ ANIMATIONS = (Animation('idle', '대기', (
 )),)
 
 
+class Playback:
+    def __init__(self):
+        self.animation_index = 0
+        self.frame_index = 0
+        self.frame_elapsed = 0.0
+
+    @property
+    def animation(self):
+        return ANIMATIONS[self.animation_index]
+
+    @property
+    def frame(self):
+        return self.animation.frames[self.frame_index]
+
+    def update(self, dt):
+        self.frame_elapsed += dt
+        while self.frame_elapsed >= FRAME_SECONDS:
+            self.frame_elapsed -= FRAME_SECONDS
+            self.frame_index = min(self.frame_index + 1, len(self.animation.frames) - 1)
+
+
 def draw_frame(sheet, frame):
     sheet.clip_draw(*frame.clip(sheet.h), CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
 
@@ -69,9 +92,14 @@ def main():
         except Exception as error:
             print(f'이미지 로드 실패: {IMAGE_PATH}\n{error}', file=sys.stderr)
             return 1
+        playback = Playback()
+        previous = perf_counter()
         while handle_events():
+            now = perf_counter()
+            playback.update(now - previous)
+            previous = now
             pico2d.clear_canvas()
-            draw_frame(sheet, ANIMATIONS[0].frames[0])
+            draw_frame(sheet, playback.frame)
             pico2d.update_canvas()
             pico2d.delay(0.01)
     finally:
