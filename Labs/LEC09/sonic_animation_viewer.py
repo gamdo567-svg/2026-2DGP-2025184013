@@ -48,7 +48,7 @@ ANIMATIONS = (Animation('idle', '대기', (
     Frame(58, 38, 28, 39), Frame(87, 38, 29, 39),
     Frame(118, 38, 30, 39), Frame(150, 38, 30, 39),
     Frame(182, 38, 30, 39), Frame(214, 38, 29, 39),
-)),)
+)), Animation('look_up', '위 보기', (Frame(244, 38, 25, 39),)))
 
 
 class Playback:
@@ -78,6 +78,7 @@ class Playback:
             self.waiting = False
             self.completed_cycles = 0
             self.frame_index = 0
+            self.animation_index = min(self.animation_index + 1, len(ANIMATIONS) - 1)
         self.frame_elapsed += dt
         while self.frame_elapsed >= FRAME_SECONDS:
             self.frame_elapsed -= FRAME_SECONDS
