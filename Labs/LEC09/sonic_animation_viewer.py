@@ -1,6 +1,7 @@
 """소닉 스프라이트 애니메이션 뷰어."""
 
 from pathlib import Path
+from dataclasses import dataclass
 import sys
 
 import pico2d
@@ -16,6 +17,26 @@ IMAGE_PATH = Path(__file__).resolve().with_name('sonic-sprite.png')
 # y=327..372: 방향 전환 6장, 넘어지기 2장
 # y=379..419: 균형 잡기 8장 / y=426..468: 놀라기 2장, 옆 보기 2장
 # y>=469: 크레딧과 장식 캐릭터로 재생에서 제외한다.
+
+
+@dataclass(frozen=True)
+class Frame:
+    x: int
+    top: int
+    width: int
+    height: int
+    offset_x: float = 0
+    offset_y: float = 0
+
+    def clip(self, image_height):
+        return self.x, image_height - self.top - self.height, self.width, self.height
+
+
+@dataclass(frozen=True)
+class Animation:
+    key: str
+    name: str
+    frames: tuple[Frame, ...]
 
 
 def handle_events():
