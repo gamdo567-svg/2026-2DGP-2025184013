@@ -39,7 +39,12 @@ class Animation:
     frames: tuple[Frame, ...]
 
 
-ANIMATIONS = (Animation('idle', '대기', (Frame(1, 38, 28, 39),)),)
+ANIMATIONS = (Animation('idle', '대기', (
+    Frame(1, 38, 28, 39), Frame(31, 38, 26, 39),
+    Frame(58, 38, 28, 39), Frame(87, 38, 29, 39),
+    Frame(118, 38, 30, 39), Frame(150, 38, 30, 39),
+    Frame(182, 38, 30, 39), Frame(214, 38, 29, 39),
+)),)
 
 
 def draw_frame(sheet, frame):
