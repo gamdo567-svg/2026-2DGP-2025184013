@@ -129,28 +129,31 @@ class Playback:
         return self.animation.frames[self.frame_index]
 
     def update(self, dt):
-        if self.waiting:
-            self.wait_elapsed += dt
-            if self.wait_elapsed < WAIT_SECONDS:
+        """넘친 시간을 다음 상태에 넘겨 지연 시에도 재생 순서를 유지한다."""
+        while dt > 0:
+            duration = WAIT_SECONDS if self.waiting else FRAME_SECONDS
+            elapsed = self.wait_elapsed if self.waiting else self.frame_elapsed
+            remaining = duration - elapsed
+            if dt + 1e-9 < remaining:
+                if self.waiting:
+                    self.wait_elapsed += dt
+                else:
+                    self.frame_elapsed += dt
                 return
-            dt = self.wait_elapsed - WAIT_SECONDS
-            self.wait_elapsed = 0.0
-            self.waiting = False
-            self.completed_cycles = 0
-            self.frame_index = 0
-            self.animation_index = (self.animation_index + 1) % len(ANIMATIONS)
-        self.frame_elapsed += dt
-        while self.frame_elapsed >= FRAME_SECONDS:
-            self.frame_elapsed -= FRAME_SECONDS
-            self.frame_index = (self.frame_index + 1) % len(self.animation.frames)
-            if self.frame_index == 0:
-                self.completed_cycles += 1
-                if self.completed_cycles == REPEAT_COUNT:
-                    self.frame_index = len(self.animation.frames) - 1
-                    self.waiting = True
-                    self.wait_elapsed = self.frame_elapsed
-                    self.frame_elapsed = 0.0
-                    break
+            dt = max(0.0, dt - remaining)
+            if self.waiting:
+                self.wait_elapsed = 0.0
+                self.waiting = False
+                self.completed_cycles = 0
+                self.frame_index = 0
+                self.animation_index = (self.animation_index + 1) % len(ANIMATIONS)
+            else:
+                self.frame_elapsed = 0.0
+                self.frame_index += 1
+                if self.frame_index == len(self.animation.frames):
+                    self.completed_cycles += 1
+                    self.waiting = self.completed_cycles == REPEAT_COUNT
+                    self.frame_index = len(self.animation.frames) - 1 if self.waiting else 0
 
 
 def calculate_scale():
