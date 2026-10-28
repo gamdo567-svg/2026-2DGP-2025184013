@@ -6,6 +6,25 @@ from transitions import Machine, State
 from grass import Grass
 from boy import Boy as BaseBoy
 
+class AutoRun(State):
+    DURATION = 5.0
+    SPEED_MULTIPLIER = 2.0
+    SCALE = 2.0
+
+    def __init__(self, boy):
+        self.boy = boy
+        super().__init__(name='AutoRun', on_enter=self.enter, on_exit=self.exit)
+
+    def enter(self):
+        self.boy.reset_frame()
+        self.boy.pressed_keys.clear()
+        self.boy.invincible = True
+        self.deadline = get_time() + self.DURATION
+
+    def exit(self):
+        self.boy.invincible = False
+
+
 class Boy(BaseBoy):
     IDLE_FPS = 8
     IDLE_FRAMES = 8
