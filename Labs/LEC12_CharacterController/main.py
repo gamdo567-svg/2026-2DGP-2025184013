@@ -131,6 +131,12 @@ class Boy(BaseBoy):
     def handle_event(self, event):
         if event.type not in (SDL_KEYDOWN, SDL_KEYUP):
             return
+        if self.is_AutoRun():
+            if event.type == SDL_KEYDOWN and event.key in (SDLK_LEFT, SDLK_RIGHT):
+                self.pressed_keys.add(event.key)
+                self.face_dir = self.direction()
+                self.cancel_auto_run()
+            return
         if self.is_SLEEP():
             if event.type == SDL_KEYDOWN and event.key in (SDLK_LEFT, SDLK_RIGHT):
                 self.pressed_keys.add(event.key)
