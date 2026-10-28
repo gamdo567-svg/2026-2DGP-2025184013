@@ -33,6 +33,18 @@ class AutoRun(State):
     def advance(self, dt):
         self.boy.x += self.boy.face_dir * self.boy.MOVE_SPEED * self.SPEED_MULTIPLIER * dt
         self.boy.frame = (self.boy.frame + self.boy.RUN_FPS * self.SPEED_MULTIPLIER * dt) % 8
+        left, right = self.bounds()
+        while self.boy.x < left or self.boy.x > right:
+            if self.boy.x > right:
+                self.boy.x = 2 * right - self.boy.x
+                self.boy.face_dir = -1
+            elif self.boy.x < left:
+                self.boy.x = 2 * left - self.boy.x
+                self.boy.face_dir = 1
+        if self.boy.x == left:
+            self.boy.face_dir = 1
+        elif self.boy.x == right:
+            self.boy.face_dir = -1
 
 
 class Boy(BaseBoy):
