@@ -195,6 +195,9 @@ class Boy(BaseBoy):
             self.frame = (self.frame + self.RUN_FPS * dt) % 8
 
     def draw(self):
+        if self.is_AutoRun():
+            self.auto_run.draw()
+            return
         if self.is_SLEEP():
             row = 300 if self.face_dir == 1 else 200
             # Rotate the standing sprite onto the grass to make a lying pose.
