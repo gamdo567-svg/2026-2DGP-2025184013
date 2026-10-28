@@ -24,6 +24,10 @@ class AutoRun(State):
     def exit(self):
         self.boy.invincible = False
 
+    def advance(self, dt):
+        self.boy.x += self.boy.face_dir * self.boy.MOVE_SPEED * self.SPEED_MULTIPLIER * dt
+        self.boy.frame = (self.boy.frame + self.boy.RUN_FPS * self.SPEED_MULTIPLIER * dt) % 8
+
 
 class Boy(BaseBoy):
     IDLE_FPS = 8
