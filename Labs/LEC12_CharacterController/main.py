@@ -20,6 +20,8 @@ class AutoRun(State):
         self.boy.pressed_keys.clear()
         self.boy.invincible = True
         self.deadline = get_time() + self.DURATION
+        left, right = self.bounds()
+        self.boy.x = max(left, min(right, self.boy.x))
 
     def exit(self):
         self.boy.invincible = False
