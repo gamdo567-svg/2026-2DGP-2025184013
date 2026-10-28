@@ -77,6 +77,8 @@ class Boy(BaseBoy):
         self.frame = 0.0
         self.pressed_keys = set()
         self.velocity_y = 0.0
+        self.invincible = False
+        self.auto_run = AutoRun(self)
         self.last_update = get_time()
         self.machine = Machine(
             model=self,
