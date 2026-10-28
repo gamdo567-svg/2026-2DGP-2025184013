@@ -46,6 +46,12 @@ class AutoRun(State):
         elif self.boy.x == right:
             self.boy.face_dir = -1
 
+    def update(self, dt, now):
+        remaining = max(0.0, self.deadline - (now - dt))
+        self.advance(min(dt, remaining))
+        if now >= self.deadline:
+            self.boy.finish_auto_run()
+
 
 class Boy(BaseBoy):
     IDLE_FPS = 8
