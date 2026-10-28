@@ -172,6 +172,9 @@ class Boy(BaseBoy):
         now = get_time()
         dt = max(0.0, now - self.last_update)
         self.last_update = now
+        if self.is_AutoRun():
+            self.auto_run.update(dt, now)
+            return
         if self.is_SLEEP():
             return
         self.x = max(25, min(775, self.x + self.direction() * self.MOVE_SPEED * dt))
