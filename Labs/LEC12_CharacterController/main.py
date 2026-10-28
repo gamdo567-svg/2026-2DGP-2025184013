@@ -85,7 +85,8 @@ class Boy(BaseBoy):
             states=[State(name='Idle', on_enter='enter_idle'),
                     State(name='Run', on_enter='reset_frame'),
                     State(name='Jump', on_enter='enter_jump'),
-                    State(name='SLEEP', on_enter='enter_sleep')],
+                    State(name='SLEEP', on_enter='enter_sleep'),
+                    self.auto_run],
             transitions=[
                 {'trigger': 'move', 'source': ['Idle', 'SLEEP'], 'dest': 'Run'},
                 {'trigger': 'stop', 'source': 'Run', 'dest': 'Idle'},
