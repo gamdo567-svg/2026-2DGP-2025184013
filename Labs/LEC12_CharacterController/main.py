@@ -152,6 +152,9 @@ class Boy(BaseBoy):
             if event.key in self.pressed_keys:
                 return
             self.pressed_keys.add(event.key)
+            if event.key == SDLK_a and self.is_Idle():
+                self.start_auto_run()
+                return
             if event.key == SDLK_SPACE and not self.is_Jump():
                 self.jump()
         else:
