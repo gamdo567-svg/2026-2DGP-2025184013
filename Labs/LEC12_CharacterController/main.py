@@ -13,9 +13,9 @@ class AutoRun(State):
 
     def __init__(self, boy):
         self.boy = boy
-        super().__init__(name='AutoRun', on_enter=self.enter, on_exit=self.exit)
+        super().__init__(name='AutoRun', on_enter=self.activate, on_exit=self.deactivate)
 
-    def enter(self):
+    def activate(self):
         self.boy.reset_frame()
         self.boy.pressed_keys.clear()
         self.boy.invincible = True
@@ -25,7 +25,7 @@ class AutoRun(State):
         left, right = self.bounds()
         self.boy.x = max(left, min(right, self.boy.x))
 
-    def exit(self):
+    def deactivate(self):
         self.boy.invincible = False
 
     def bounds(self):
