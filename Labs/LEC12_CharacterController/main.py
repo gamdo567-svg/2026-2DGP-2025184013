@@ -19,7 +19,9 @@ class AutoRun(State):
         self.boy.reset_frame()
         self.boy.pressed_keys.clear()
         self.boy.invincible = True
-        self.deadline = get_time() + self.DURATION
+        now = get_time()
+        self.boy.last_update = now
+        self.deadline = now + self.DURATION
         left, right = self.bounds()
         self.boy.x = max(left, min(right, self.boy.x))
 
@@ -153,7 +155,8 @@ class Boy(BaseBoy):
                 return
             self.pressed_keys.add(event.key)
             if event.key == SDLK_a and self.is_Idle():
-                self.start_auto_run()
+                if not getattr(event, 'repeat', False):
+                    self.start_auto_run()
                 return
             if event.key == SDLK_SPACE and not self.is_Jump():
                 self.jump()
