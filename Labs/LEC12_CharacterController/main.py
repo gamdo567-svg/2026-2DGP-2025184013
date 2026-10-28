@@ -52,6 +52,15 @@ class AutoRun(State):
         if now >= self.deadline:
             self.boy.finish_auto_run()
 
+    def draw(self):
+        boy = self.boy
+        row = 100 if boy.face_dir == 1 else 0
+        size = 100 * self.SCALE
+        # Lift the center as the sprite grows to keep its feet on the grass.
+        y = boy.GROUND_Y + 40 * (self.SCALE - 1)
+        boy.image.clip_draw(int(boy.frame) * 100, row, 100, 100,
+                            boy.x, y, size, size)
+
 
 class Boy(BaseBoy):
     IDLE_FPS = 8
